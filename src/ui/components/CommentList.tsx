@@ -1,40 +1,49 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { getComments } from '../../lib/apis/commentItemApi';
+import { CommentItemProps } from '../../lib/types/commentItem.interface';
 
-// 임시 데이터 입니다. 코드 작성시 data 부분을 지워주세요
-const data = [
-    {
-        id: 1,
-        profile_url: "https://picsum.photos/id/1/50/50",
-        author: "abc_1",
-        content: "UI 테스트는 어떻게 진행하나요",
-        createdAt: "2020-05-01",
-    },
-];
+const CommentList = () => {
+  const [comments, setComments] = useState<CommentItemProps[]>([]);
 
-const CommentList = () => (
+  const getCommentsItem = async () => {
+    try {
+      const response = await getComments();
+      setComments(response.data);
+    } catch (e) {
+      alert('목록 불러오기에 실패했습니다.');
+      setComments([]);
+    }
+  };
+
+  useEffect(() => {
+    getCommentsItem();
+  }, []);
+
+  return (
     <>
-        {data.map((comment, key) => (
-            <Comment key={key}>
-                <img src={comment.profile_url} alt=""/>
+      {comments.map((comment: any, key: any) => (
+        <Comment key={key}>
+          <img src={comment.profile_url} alt='' />
 
-                {comment.author}
+          {comment.author}
 
-                <CreatedAt>{comment.createdAt}</CreatedAt>
+          <CreatedAt>{comment.createdAt}</CreatedAt>
 
-                <Content>{comment.content}</Content>
+          <Content>{comment.content}</Content>
 
-                <Button>
-                    <a>수정</a>
-                    <a>삭제</a>
-                </Button>
+          <Button>
+            <a>수정</a>
+            <a>삭제</a>
+          </Button>
 
-                <hr/>
-            </Comment>
-        ))
-        }
+          <hr />
+        </Comment>
+      ))
+      }
     </>
-)
+  );
+};
 
 export default CommentList;
 

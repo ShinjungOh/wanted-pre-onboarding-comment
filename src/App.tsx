@@ -1,16 +1,12 @@
-import React from "react";
-import CommentList from "./ui/components/CommentList";
-import PageList from "./ui/components/PageList";
-import Form from "./ui/components/Form";
+import React from 'react';
+import CommentPage from './ui/pages/CommentPage';
 
 const App = () => {
-    return (
-        <div>
-            <CommentList/>
-            <PageList/>
-            <Form/>
-        </div>
-    );
-}
+  return (
+    <>
+      <CommentPage />
+    </>
+  );
+};
 
 export default App;

@@ -1,49 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { getComments } from '../../lib/apis/commentItemApi';
 import { CommentItemProps } from '../../lib/types/commentItem.interface';
 
-const CommentList = () => {
-  const [comments, setComments] = useState<CommentItemProps[]>([]);
+interface Props {
+  comments: CommentItemProps[];
+}
 
-  const getCommentsItem = async () => {
-    try {
-      const response = await getComments();
-      setComments(response.data);
-    } catch (e) {
-      alert('목록 불러오기에 실패했습니다.');
-      setComments([]);
+const CommentList = ({ comments }: Props) => (
+  <>
+    {comments.map((comment: any, key: any) => (
+      <Comment key={key}>
+        <img src={comment.profile_url} alt='' />
+
+        {comment.author}
+
+        <CreatedAt>{comment.createdAt}</CreatedAt>
+
+        <Content>{comment.content}</Content>
+
+        <Button>
+          <a>수정</a>
+          <a>삭제</a>
+        </Button>
+
+        <hr />
+      </Comment>
+    ))
     }
-  };
-
-  useEffect(() => {
-    getCommentsItem();
-  }, []);
-
-  return (
-    <>
-      {comments.map((comment: any, key: any) => (
-        <Comment key={key}>
-          <img src={comment.profile_url} alt='' />
-
-          {comment.author}
-
-          <CreatedAt>{comment.createdAt}</CreatedAt>
-
-          <Content>{comment.content}</Content>
-
-          <Button>
-            <a>수정</a>
-            <a>삭제</a>
-          </Button>
-
-          <hr />
-        </Comment>
-      ))
-      }
-    </>
-  );
-};
+  </>
+);
 
 export default CommentList;
 

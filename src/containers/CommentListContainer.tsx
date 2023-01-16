@@ -1,8 +1,10 @@
 import React from "react";
 import CommentList from "../components/CommentList";
 
-function CommentListContainer() {
-  return <CommentList />;
-}
+const CommentListContainer = () => (
+    <>
+        <CommentList/>
+    </>
+)
 
 export default CommentListContainer;

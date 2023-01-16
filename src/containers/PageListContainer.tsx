@@ -1,8 +1,11 @@
 import React from "react";
 import PageList from "../components/PageList";
 
-function PageListContainer() {
-  return <PageList />;
-}
+const PageListContainer = () => (
+    <>
+        <PageList/>;
+    </>
+)
+
 
 export default PageListContainer;

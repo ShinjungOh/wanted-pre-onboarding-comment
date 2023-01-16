@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const PageList = () => {
-  const pageArray = [];
+    const pageArray = [];
 
-  pageArray.push(
-    // 임시로 페이지 하나만 설정했습니다.
-    <Page key="1">1</Page>
-  );
+    pageArray.push(
+        // 임시로 페이지 하나만 설정했습니다.
+        <Page key="1">1</Page>
+    );
 
-  return <PageListStyle>{pageArray}</PageListStyle>;
+    return <PageListStyle>{pageArray}</PageListStyle>;
 }
 
 export default PageList;
@@ -25,10 +25,10 @@ const Page = styled.button`
   font-size: 1rem;
   line-height: 1.5;
   border: 1px solid lightgray;
-  
-  ${({ active }: any) =>
-    active &&
-    `
+
+  ${({active}: any) =>
+          active &&
+          `
         background: gray;
         color: #fff;
   `}

@@ -6,18 +6,21 @@ export const getComments = async () => {
   return await client.get(url);
 };
 
-export const createComment = async ({ profile, author, content, createdAt }: CommentItemProps) => {
+export const getComment = async (id: number) => {
+  const url = `/${id}`;
+  return await client.get(url);
+}
+
+export const createComment = async (comment: CommentItemProps) => {
   const url = '/';
-  const data = {
-    profile, author, content, createdAt,
-  };
-  await client.post(url, data);
+  const { profile_url, author, content, createdAt } = comment;
+  await client.post(url, { profile_url, author, content, createdAt });
 };
 
-export const updateComment = async (id: number) => {
-  const url = `/${id}`;
-  const data = {};
-  await client.put(url, data);
+export const updateComment = async (comment: CommentItemProps) => {
+  const url = `/${comment.id}`;
+  const { profile_url, author, content, createdAt } = comment;
+  await client.put(url, { profile_url, author, content, createdAt });
 };
 
 export const deleteComment = async (id: number) => {

@@ -1,6 +1,6 @@
 export interface CommentItemProps {
   id?: number;
-  profile: string;
+  profile_url: string;
   author: string;
   content: string;
   createdAt: string;

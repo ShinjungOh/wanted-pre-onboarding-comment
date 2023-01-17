@@ -1,13 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { CommentItemProps } from '../../lib/types/commentItem.interface';
 
 interface Props {
-  createCommentItem: any;
+  createCommentItem: CommentItemProps;
   onChange: (e: any) => void;
   onSubmit: (e: any) => void;
+  onUpdate: (comment: CommentItemProps) => void;
+  isOpenToggle: boolean;
 }
 
-const Form = ({ createCommentItem, onChange, onSubmit }: Props) => {
+const Form = ({ createCommentItem, onChange, onSubmit, onUpdate, isOpenToggle }: Props) => {
 
   return (
     <FormStyle>
@@ -18,7 +21,7 @@ const Form = ({ createCommentItem, onChange, onSubmit }: Props) => {
           placeholder='https://picsum.photos/id/1/50/50'
           required
           onChange={onChange}
-          value={createCommentItem.profile}
+          value={createCommentItem.profile_url}
         />
         <br />
         <input
@@ -46,7 +49,13 @@ const Form = ({ createCommentItem, onChange, onSubmit }: Props) => {
           value={createCommentItem.createdAt}
         />
         <br />
-        <button type='submit' onSubmit={onSubmit}>등록</button>
+        {
+          isOpenToggle
+            ?
+            <button type='submit' onClick={() => onUpdate(createCommentItem)}>수정</button>
+            :
+            <button type='submit' onClick={onSubmit}>등록</button>
+        }
       </form>
     </FormStyle>
   );

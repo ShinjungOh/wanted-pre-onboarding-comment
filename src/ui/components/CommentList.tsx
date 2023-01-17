@@ -4,9 +4,10 @@ import { CommentItemProps } from '../../lib/types/commentItem.interface';
 
 interface Props {
   comments: CommentItemProps[];
+  onDelete: (id: number) => void;
 }
 
-const CommentList = ({ comments }: Props) => (
+const CommentList = ({ comments, onDelete }: Props) => (
   <>
     {comments.map((comment: any, key: any) => (
       <Comment key={key}>
@@ -20,7 +21,7 @@ const CommentList = ({ comments }: Props) => (
 
         <Button>
           <a>수정</a>
-          <a>삭제</a>
+          <a onClick={() => onDelete(comment.id)}>삭제</a>
         </Button>
 
         <hr />

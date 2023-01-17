@@ -14,13 +14,13 @@ export const createComment = async ({ profile, author, content, createdAt }: Com
   await client.post(url, data);
 };
 
-export const updateComment = async (commentId: number) => {
-  const url = `/${commentId}`;
+export const updateComment = async (id: number) => {
+  const url = `/${id}`;
   const data = {};
   await client.put(url, data);
 };
 
-export const deleteComment = async (commentId: number) => {
-  const url = `/${commentId}`;
+export const deleteComment = async (id: number) => {
+  const url = `/${id}`;
   await client.delete(url);
 };

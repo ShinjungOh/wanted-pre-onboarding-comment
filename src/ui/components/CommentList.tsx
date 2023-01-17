@@ -6,32 +6,39 @@ interface Props {
   comments: CommentItemProps[];
   onDelete: (id: number) => void;
   getComment: any;
+  loading: boolean;
 }
 
-const CommentList = ({ comments, getComment, onDelete }: Props) => (
-  <>
-    {comments.map((comment: any, key: any) => (
-      <Comment key={key}>
-        <img src={comment.profile_url} alt='' />
+const CommentList = ({ loading, comments, getComment, onDelete }: Props) => {
+  if (loading) {
+    return <div style={{ width: '100%', textAlign: 'center', padding: '50px 0' }}>Loading...</div>;
+  }
 
-        {comment.author}
+  return (
+    <>
+      {comments.map((comment) => (
+        <Comment key={comment.id}>
+          <img src={comment.profile_url} alt='profile' />
 
-        <CreatedAt>{comment.createdAt}</CreatedAt>
+          {comment.author}
 
-        <Content>{comment.content}</Content>
+          <CreatedAt>{comment.createdAt}</CreatedAt>
 
-        <Button>
-          <a
-            onClick={() => getComment(comment.id)}>수정</a>
-          <a onClick={() => onDelete(comment.id)}>삭제</a>
-        </Button>
+          <Content>{comment.content}</Content>
 
-        <hr />
-      </Comment>
-    ))
-    }
-  </>
-);
+          <Button>
+            <a
+              onClick={() => getComment(comment.id)}>수정</a>
+            <a onClick={() => onDelete(comment.id as number)}>삭제</a>
+          </Button>
+
+          <hr />
+        </Comment>
+      ))
+      }
+    </>
+  );
+};
 
 export default CommentList;
 

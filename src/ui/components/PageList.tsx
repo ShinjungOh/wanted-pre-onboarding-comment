@@ -1,16 +1,34 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-const PageList = () => {
-    const pageArray = [];
-
-    pageArray.push(
-        // 임시로 페이지 하나만 설정했습니다.
-        <Page key="1">1</Page>
-    );
-
-    return <PageListStyle>{pageArray}</PageListStyle>;
+interface Props {
+  commentsPerPage: number;
+  totalComments: number;
+  onPaginate: (pageNumber: number) => void;
 }
+
+const PageList = ({ commentsPerPage, totalComments, onPaginate }: Props) => {
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalComments / commentsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <>
+      <PageListStyle>
+        {pageNumbers.map((pageNumber) => (
+          <Page
+            key={pageNumber}
+            onClick={() => onPaginate(pageNumber)}
+          >
+            {pageNumber}
+          </Page>
+        ))}
+      </PageListStyle>
+    </>
+  );
+};
 
 export default PageList;
 
@@ -25,8 +43,9 @@ const Page = styled.button`
   font-size: 1rem;
   line-height: 1.5;
   border: 1px solid lightgray;
+  cursor: pointer;
 
-  ${({active}: any) =>
+  ${({ active }: any) =>
           active &&
           `
         background: gray;

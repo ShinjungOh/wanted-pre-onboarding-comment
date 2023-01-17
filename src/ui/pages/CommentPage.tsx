@@ -3,7 +3,13 @@ import CommentList from '../components/CommentList';
 import PageList from '../components/PageList';
 import Form from '../components/Form';
 import { CommentItemProps } from '../../lib/types/commentItem.interface';
-import { createComment, deleteComment, getComment, getComments, updateComment } from '../../lib/apis/commentItemApi';
+import {
+  createComment,
+  deleteComment,
+  getComment,
+  getComments,
+  updateComment,
+} from '../../lib/apis/commentItemApi';
 
 const CommentPage = () => {
   const [createCommentItem, setCreateCommentItem] = useState<CommentItemProps>({
@@ -14,6 +20,17 @@ const CommentPage = () => {
   });
   const [comments, setComments] = useState<CommentItemProps[]>([]);
   const [isOpenToggle, setIsOpenToggle] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [commentsPerPage, setCommentsPerPage] = useState(5);
+
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComment = comments.slice(indexOfFirstComment, indexOfLastComment);
+
+  const handlePaginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   const onToggleUpdate = () => {
     setIsOpenToggle(((prev) => !prev));
@@ -29,13 +46,9 @@ const CommentPage = () => {
     }
   };
 
-  // console.log(comments);
-  // console.log(isOpenToggle);
-
   const getCommentItem = async (id: number) => {
     try {
       const { data } = await getComment(id);
-      // console.log(data);
       setCreateCommentItem(data);
       onToggleUpdate();
     } catch (e) {
@@ -45,8 +58,6 @@ const CommentPage = () => {
 
   const onChangeCommentInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    console.log('value>>', value);
-    console.log('name>>', name);
     setCreateCommentItem({
       ...createCommentItem,
       [name]: value,
@@ -55,6 +66,7 @@ const CommentPage = () => {
 
   const handleSubmitCommentItem = async (e: any) => {
     e.preventDefault();
+    e.stopPropagation();
     try {
       await createComment({
         profile_url: createCommentItem.profile_url,
@@ -62,12 +74,18 @@ const CommentPage = () => {
         content: createCommentItem.content,
         createdAt: createCommentItem.createdAt,
       });
+      getCommentsItem();
+      alert('댓글이 성공적으로 추가되었습니다!');
+      setCreateCommentItem({
+        author: '',
+        content: '',
+        createdAt: '',
+        profile_url: '',
+      });
     } catch (e) {
       alert('댓글 추가에 실패했습니다.');
     }
   };
-
-  // console.log(createCommentItem);
 
   const handleUpdateCommentItem = async (comment: CommentItemProps) => {
     try {
@@ -95,17 +113,29 @@ const CommentPage = () => {
   };
 
   useEffect(() => {
-    getCommentsItem();
+    const fetchComments = async () => {
+      setLoading(true);
+      const response = await getComments();
+      setComments(response.data);
+      setLoading(false);
+    };
+
+    fetchComments();
   }, []);
 
   return (
     <>
       <CommentList
-        comments={comments}
+        comments={currentComment}
+        loading={loading}
         onDelete={handleDeleteCommentItem}
         getComment={getCommentItem}
       />
-      <PageList />
+      <PageList
+        commentsPerPage={commentsPerPage}
+        totalComments={comments.length}
+        onPaginate={handlePaginate}
+      />
       <Form
         createCommentItem={createCommentItem}
         isOpenToggle={isOpenToggle}
